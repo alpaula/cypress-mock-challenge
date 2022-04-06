@@ -1,13 +1,22 @@
+// Libs
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { BrowserRouter, Switch, Route } from "react-router-dom";
 import './index.css';
-import App from './App';
 import reportWebVitals from './reportWebVitals';
 
+// Components
+import Private from './private';
+import Login from './Pages/Login';
+import Layouts from './Pages/Layouts';
+
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+  <BrowserRouter>
+    <Switch>
+      <Route exact path="/login" render={(props) => <Login {...props} />} />
+      <Private render={(props) => <Layouts {...props} />} />
+    </Switch>
+  </BrowserRouter>,
   document.getElementById('root')
 );
 
