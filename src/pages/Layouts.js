@@ -11,9 +11,8 @@ import Header from './Header';
 
 // Styles
 const Container = styled.div`
-  display: flex;
-  align-items: flex-start;
   width: 100%;
+  height: 100vh;
 `;
 
 const Layouts = (props) => {
@@ -53,8 +52,9 @@ const Layouts = (props) => {
     <Container>
       <Header
         handleLogout={handleLogout}
+        history={props.history}
       />
-      {renderLayout()()}
+      {renderLayout()}
     </Container>
   );
 };
