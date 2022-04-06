@@ -34,6 +34,7 @@ const LogoLabel = styled.label`
   bottom: .5rem;
   right: 0;
   font: 300 1rem 'Josefin Sans', sans-serif;
+  color: var(--ceci-text);
 `;
 
 const Content = styled.div`
@@ -48,6 +49,7 @@ const Content = styled.div`
 const Title = styled.h1`
   text-align: center;
   font: 300 2.25rem 'Josefin Sans', sans-serif;
+  color: var(--ceci-text);
 `;
 
 const InputLabel = styled.label`
@@ -108,8 +110,8 @@ const Button = styled.button`
   border: none;
   border-radius: .25rem;
   background-color: var(--ceci-medium-second);
-  color: #fff;
   font: 300 1.125rem 'Josefin Sans', sans-serif;
+  color: #fff;
   cursor: pointer;
 
   :disabled {
