@@ -8,6 +8,7 @@ export const handlers = [
 
     if (isValid) {
       return res(
+        ctx.delay(1500),
         ctx.status(200),
         ctx.json({
           id: 'abc123',
@@ -20,6 +21,7 @@ export const handlers = [
     }
 
     return res(
+      ctx.delay(1500),
       ctx.status(403),
       ctx.json({
         errorMessage: 'Not authorized',
