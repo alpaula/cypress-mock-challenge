@@ -1,24 +1,27 @@
 // Libs
 import React from "react";
 import styled from 'styled-components';
+import { useHistory } from "react-router-dom";
 
 // Styles
-const Container = styled.div`
+const Container = styled.button`
   position: relative;
-  min-width: 15rem;
-  width: 15rem;
-  height: 22rem;
+  min-width: 16rem;
+  width: 16rem;
+  height: 24rem;
+  margin-bottom: 1.5rem;
   margin-right: 1.5rem;
-  border: 2px solid transparent;
+  border: none;
   border-radius: .75rem;
   background: url(${props => props.background}) no-repeat center;
   background-size: cover;
+  cursor: pointer;
+  outline: none;
   filter: opacity(.85);
   overflow: hidden;
   
   :hover {
-    box-shadow: 0 0 15px #00000033;
-    border-color: var(--ceci-text);
+    box-shadow: 0 0 20px var(--ceci-dark);
 
     > div {
       display: block;
@@ -30,6 +33,7 @@ const BoxTexts = styled.div`
   position: absolute;
   bottom: 0;
   display: none;
+  width: 100%;
   padding: .5rem 1rem;
   background-color: #ffffffcc;
   backdrop-filter: blur(2px);
@@ -50,10 +54,18 @@ const Description = styled.p`
   }
 `;
 
-const Card = ({ item }) => {
+const Card = ({ item, contentStore }) => {
+  const history = useHistory();
+
+  const handleSelectedItem = () => {
+    contentStore.setSelectedMovie(item);
+    history.push(`/movie/${item.id}`);
+  }
+
   return (
     <Container
       background={item.posterImage}
+      onClick={handleSelectedItem}
     >
       <BoxTexts>
         <Title>{item.title}</Title>
