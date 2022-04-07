@@ -6,13 +6,14 @@ import styled from 'styled-components';
 
 // Axios
 import { trendingClient } from '../dataflow/axios/axios';
+
+// Components
 import Card from '../components/Card';
 
 // Styles
 const Container = styled.div`
   width: 100%;
   padding: 3rem 0;
-  background-color: var(--ceci-medium-second);
 `;
 
 const Content = styled.div`
@@ -20,19 +21,21 @@ const Content = styled.div`
 `;
 
 const Title = styled.h2`
-  margin-bottom: 0;
+  margin: 0;
   margin-left: 3rem;
   font: 800 2rem 'Josefin Sans', sans-serif;
   color: #fff;
 `;
 
-const MoreButton = styled.a`
+const MoreButton = styled.button`
   position: absolute;
   top: .75rem;
   right: 2rem;
+  border: none;
+  background-color: transparent;
   font: 300 1rem 'Josefin Sans', sans-serif;
   color: #fff;
-  text-decoration: none;
+  outline: none;
   cursor: pointer;
 
   :hover {
@@ -65,15 +68,16 @@ const dict = {
 };
 
 const Home = observer(({
-  contentStore
+  contentStore,
+  history
 }) => {
   const language = navigator.language === 'pt-BR' ? navigator.language : 'en';
 
   I18n.setLanguage(language);
   I18n.putVocabularies(dict);
 
-  const moviesList = contentStore.getMovies();
-  const seriesList = contentStore.getSeries();
+  const moviesList = contentStore.getMoviesPreview();
+  const seriesList = contentStore.getSeriesPreview();
 
   const getMovies = async () => {
     try {
@@ -91,36 +95,38 @@ const Home = observer(({
           score: movie.vote_average,
           posterImage: `${process.env.REACT_APP_API_IMAGE_URL_BASE}${movie.poster_path}`,
           adult: movie.adult,
-          popularity: movie.popularity
+          popularity: movie.popularity,
+          backdropImage: `${process.env.REACT_APP_API_IMAGE_URL_BASE}${movie.backdrop_path}`
         }));
 
       const series = response.data.results
-        .filter(movie => movie.media_type === 'tv')
-        .map(movie => ({
-          id: movie.id,
-          title: movie.name,
-          description: movie.overview,
-          score: movie.vote_average,
-          posterImage: `${process.env.REACT_APP_API_IMAGE_URL_BASE}${movie.poster_path}`,
-          adult: true,
-          popularity: movie.popularity
+        .filter(serie => serie.media_type === 'tv')
+        .map(serie => ({
+          id: serie.id,
+          title: serie.name,
+          description: serie.overview,
+          score: serie.vote_average,
+          posterImage: `${process.env.REACT_APP_API_IMAGE_URL_BASE}${serie.poster_path}`,
+          adult: false,
+          popularity: serie.popularity,
+          backdropImage: `${process.env.REACT_APP_API_IMAGE_URL_BASE}${serie.backdrop_path}`
         }));
 
-      contentStore.saveMovies(movies);
-      contentStore.saveSeries(series);
-    } catch (error) {
-      console.log('error: ', error);
-    }
+      contentStore.saveMoviesPreview(movies);
+      contentStore.saveSeriesPreview(series);
+    } catch (error) { console.log('error: ', error) }
   }
 
   useEffect(() => {
-    getMovies();
+    if (!moviesList.length && !seriesList.length) {
+      getMovies();
+    }
   }, []);
 
   const renderMovies = () => (
     <Content>
       <Title>{I18n.get('movies-title')}</Title>
-      <MoreButton href='/movies/'>
+      <MoreButton onClick={() => history.push('/movies/')}>
         {I18n.get('view-more')}
       </MoreButton>
       <ListBox>
@@ -132,7 +138,7 @@ const Home = observer(({
   const renderSeries = () => (
     <Content>
       <Title>{I18n.get('series-title')}</Title>
-      <MoreButton href='/series/'>
+      <MoreButton onClick={() => history.push('/series/')}>
         {I18n.get('view-more')}
       </MoreButton>
       <ListBox>
