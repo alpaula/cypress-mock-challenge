@@ -9,7 +9,7 @@ import { rootStore } from '../dataflow/models/root';
 // Components
 import Series from './Series';
 import Home from './Home';
-import Header from './Header';
+import Header from '../components/Header';
 
 // Styles
 const Container = styled.div`

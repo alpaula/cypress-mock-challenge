@@ -60,6 +60,10 @@ const TabItem = styled.a`
     text-decoration: underline;
     font-weight: 600;
   `}
+
+  :hover {
+    color: var(--ceci-medium);
+  }
 `;
 
 const LogoutButton = styled.button`
@@ -74,25 +78,25 @@ const LogoutButton = styled.button`
 const dict = {
   en: {
     'logout-button': 'Logout',
+    'home-tab': 'Home',
     'movies-tab': 'Movies',
     'series-tab': 'Series',
-    'animes-tab': 'Animes',
     'search-tab': 'Search',
   },
   'pt-BR': {
     'logout-button': 'Sair',
+    'home-tab': 'Home',
     'movies-tab': 'Filmes',
     'series-tab': 'Séries',
-    'animes-tab': 'Animes',
     'search-tab': 'Buscar',
   },
 };
 
 const tabsList = [
+  { id: 0, name: 'home-tab', pathname: '/' },
   { id: 1, name: 'movies-tab', pathname: '/movies' },
   { id: 2, name: 'series-tab', pathname: '/series' },
-  { id: 3, name: 'animes-tab', pathname: '/animes' },
-  { id: 4, name: 'search-tab', pathname: '/search' },
+  { id: 3, name: 'search-tab', pathname: '/search' },
 ];
 
 const Header = ({
@@ -104,15 +108,20 @@ const Header = ({
 
   const renderTabs = () => (
     <TabsList>
-      {tabsList.map(tab => (
-        <TabItem
-          key={tab.id}
-          href={tab.pathname}
-          isSelected={history.location.pathname === tab.pathname}
-        >
-          {I18n.get(tab.name)}
-        </TabItem>
-      ))}
+      {tabsList.map(tab => {
+        const { pathname } = history.location;
+        const isSelected = pathname === tab.pathname || pathname === `${tab.pathname}/`;
+
+        return (
+          <TabItem
+            key={tab.id}
+            href={tab.pathname}
+            isSelected={isSelected}
+          >
+            {I18n.get(tab.name)}
+          </TabItem>
+        );
+      })}
     </TabsList>
   );
 
