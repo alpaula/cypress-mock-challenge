@@ -7,8 +7,8 @@ import { I18n } from '@aws-amplify/core';
 import logo from '../assets/logo.png';
 
 // Styles
-const Container = styled.div`
-  position: sticky;
+const Container = styled.header`
+  position: fixed;
   top: 0;
   display: flex;
   align-items: center;
@@ -22,13 +22,15 @@ const Container = styled.div`
   z-index: 1;
 `;
 
-const BoxLogo = styled.a`
+const BoxLogo = styled.button`
   position: relative;
   display: flex;
   align-items: center;
   height: 100%;
   padding: 0 .5rem;
-  text-decoration: none;
+  border: none;
+  background-color: transparent;
+  outline: none;
   cursor: pointer;
 `;
 
@@ -49,11 +51,13 @@ const TabsList = styled.div`
   align-items: center;
 `;
 
-const TabItem = styled.a`
+const TabItem = styled.button`
   margin: 0 .75rem;
-  text-decoration: none;
+  border: none;
+  background-color: transparent;
   font: 300 1.25rem 'Josefin Sans', sans-serif;
   color: var(--ceci-text);
+  outline: none;
   cursor: pointer;
 
   ${({ isSelected }) => isSelected && `
@@ -115,7 +119,7 @@ const Header = ({
         return (
           <TabItem
             key={tab.id}
-            href={tab.pathname}
+            onClick={() => history.push(tab.pathname)}
             isSelected={isSelected}
           >
             {I18n.get(tab.name)}
@@ -127,7 +131,7 @@ const Header = ({
 
   return (
     <Container>
-      <BoxLogo href='/'>
+      <BoxLogo onClick={() => history.push('/')}>
         <Logo src={logo} />
         <LogoLabel>tv</LogoLabel>
       </BoxLogo>
