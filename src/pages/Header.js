@@ -16,8 +16,10 @@ const Container = styled.div`
   width: 100%;
   height: 3rem;
   padding: 0 3rem;
-  background-color: #fff;
+  background-color: #ffffffe6;
   box-shadow: 0 0 15px #00000033;
+  backdrop-filter: blur(2px);
+  z-index: 1;
 `;
 
 const BoxLogo = styled.a`
@@ -99,8 +101,6 @@ const Header = ({
 }) => {
   I18n.setLanguage(navigator.language === 'pt-BR' ? navigator.language : 'en');
   I18n.putVocabularies(dict);
-
-  console.log(history)
 
   const renderTabs = () => (
     <TabsList>
