@@ -9,8 +9,7 @@ const Container = styled.button`
   min-width: 17vw;
   width: 17vw;
   height: 26vw;
-  margin-bottom: 1.5rem;
-  margin-right: 1.5rem;
+  margin: .75rem;
   border: none;
   border-radius: .75rem;
   background: url(${props => props.background}) no-repeat center;
