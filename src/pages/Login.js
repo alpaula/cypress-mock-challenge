@@ -181,6 +181,12 @@ const Login = ({ history }) => {
     }
   }
 
+  const handleKeyUp = ev => {
+    if (ev.key === 'Enter' && emailValue && passwordValue) {
+      handleLogin();
+    }
+  }
+
   const handleChangeEmail = ev => {
     setError(null);
     setEmail(ev.target.value);
@@ -214,6 +220,7 @@ const Login = ({ history }) => {
             type={passwordType}
             placeholder={I18n.get('login-email-placeholder')}
             onChange={handleChangePassword}
+            onKeyUp={handleKeyUp}
             isError={error}
           />
           <PasswordButton onClick={handleChangePasswordType}>
