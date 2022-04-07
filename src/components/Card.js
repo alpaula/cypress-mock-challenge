@@ -6,9 +6,9 @@ import { useHistory } from "react-router-dom";
 // Styles
 const Container = styled.button`
   position: relative;
-  min-width: 16rem;
-  width: 16rem;
-  height: 24rem;
+  min-width: 17vw;
+  width: 17vw;
+  height: 26vw;
   margin-bottom: 1.5rem;
   margin-right: 1.5rem;
   border: none;
