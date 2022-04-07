@@ -1,13 +1,15 @@
 // Libs
-import React from 'react';
+import React, { lazy } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import Redirect from 'react-router-dom/Redirect';
 import styled from 'styled-components';
 
+import { rootStore } from '../dataflow/models/root';
+
 // Components
-import Series from './Series';
-import Home from './Home';
-import Header from './Header';
+const Series = lazy(() => import('./Series'));
+const Home = lazy(() => import('./Home'));
+const Header = lazy(() => import('./Header'));
 
 // Styles
 const Container = styled.div`
@@ -32,7 +34,12 @@ const Layouts = (props) => {
       <Route
         exact
         path={'/'}
-        render={(props) => <Home {...props} />}
+        render={(props) =>
+          <Home
+            {...props}
+            contentStore={rootStore.contentStore}
+          />
+        }
       />
       <Route
         exact
