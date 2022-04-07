@@ -5,10 +5,10 @@ import styled from 'styled-components';
 // Styles
 const Container = styled.div`
   position: relative;
-  min-width: 19%;
-  width: 19%;
+  min-width: 15rem;
+  width: 15rem;
   height: 22rem;
-  margin-right: 1rem;
+  margin-right: 1.5rem;
   border: 2px solid transparent;
   border-radius: .75rem;
   background: url(${props => props.background}) no-repeat center;

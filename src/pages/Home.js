@@ -15,12 +15,30 @@ const Container = styled.div`
   background-color: var(--ceci-medium-second);
 `;
 
-const Content = styled.div``;
+const Content = styled.div`
+  position: relative;
+`;
 
 const Title = styled.h2`
+  margin-bottom: 0;
   margin-left: 3rem;
   font: 800 2rem 'Josefin Sans', sans-serif;
   color: #fff;
+`;
+
+const MoreButton = styled.a`
+  position: absolute;
+  top: .75rem;
+  right: 2rem;
+  font: 300 1rem 'Josefin Sans', sans-serif;
+  color: #fff;
+  text-decoration: none;
+  cursor: pointer;
+
+  :hover {
+    color: var(--ceci-dark);
+    text-decoration: underline;
+  }
 `;
 
 const ListBox = styled.div`
@@ -37,17 +55,21 @@ const dict = {
   en: {
     'movies-title': 'Movies',
     'series-title': 'Series',
+    'view-more': 'view more'
   },
   'pt-BR': {
     'movies-title': 'Filmes',
     'series-title': 'Séries',
+    'view-more': 'ver mais'
   },
 };
 
 const Home = observer(({
   contentStore
 }) => {
-  I18n.setLanguage(navigator.language === 'pt-BR' ? navigator.language : 'en');
+  const language = navigator.language === 'pt-BR' ? navigator.language : 'en';
+
+  I18n.setLanguage(language);
   I18n.putVocabularies(dict);
 
   const moviesList = contentStore.getMovies();
@@ -57,6 +79,7 @@ const Home = observer(({
     try {
       const response = await trendingClient({
         method: 'get',
+        url: `&language=${language}`
       });
 
       const movies = response.data.results
@@ -66,7 +89,7 @@ const Home = observer(({
           title: movie.title,
           description: movie.overview,
           score: movie.vote_average,
-          posterImage: `https://image.tmdb.org/t/p/w500/${movie.poster_path}`,
+          posterImage: `${process.env.REACT_APP_API_IMAGE_URL_BASE}${movie.poster_path}`,
           adult: movie.adult,
           popularity: movie.popularity
         }));
@@ -78,7 +101,7 @@ const Home = observer(({
           title: movie.name,
           description: movie.overview,
           score: movie.vote_average,
-          posterImage: `https://image.tmdb.org/t/p/w500/${movie.poster_path}`,
+          posterImage: `${process.env.REACT_APP_API_IMAGE_URL_BASE}${movie.poster_path}`,
           adult: true,
           popularity: movie.popularity
         }));
@@ -97,6 +120,9 @@ const Home = observer(({
   const renderMovies = () => (
     <Content>
       <Title>{I18n.get('movies-title')}</Title>
+      <MoreButton href='/movies/'>
+        {I18n.get('view-more')}
+      </MoreButton>
       <ListBox>
         {moviesList.map(movie => <Card key={movie.id} item={movie} />)}
       </ListBox>
@@ -106,6 +132,9 @@ const Home = observer(({
   const renderSeries = () => (
     <Content>
       <Title>{I18n.get('series-title')}</Title>
+      <MoreButton href='/series/'>
+        {I18n.get('view-more')}
+      </MoreButton>
       <ListBox>
         {seriesList.map(movie => <Card key={movie.id} item={movie} />)}
       </ListBox>
