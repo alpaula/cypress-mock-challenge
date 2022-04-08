@@ -14,3 +14,10 @@ export const moviesClient = axios.create({
     'Authorization': `Bearer ${process.env.REACT_APP_API_MOVIE_CREDENTIAL}`,
   }
 });
+
+export const seriesClient = axios.create({
+  baseURL: `${process.env.REACT_APP_API_MOVIEDB_URL_BASE}tv/popular?api_key=${process.env.REACT_APP_API_MOVIEDB_API_KEY}`,
+  headers: {
+    'Authorization': `Bearer ${process.env.REACT_APP_API_MOVIE_CREDENTIAL}`,
+  }
+});

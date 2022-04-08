@@ -7,14 +7,17 @@ import styled from 'styled-components';
 import { rootStore } from '../dataflow/models/root';
 
 // Components
-import Series from './Series';
-import Home from './Home';
 import Header from '../components/Header';
+import Home from './Home';
+import Movies from './Movies';
+import Series from './Series';
 
 // Styles
 const Container = styled.div`
   width: 100%;
-  height: 100vh;
+  min-height: 100vh;
+  padding-top: 3rem;
+  background-color: var(--ceci-medium-second);
 `;
 
 const Layouts = (props) => {
@@ -43,13 +46,33 @@ const Layouts = (props) => {
       />
       <Route
         exact
-        path={'/series/'}
-        render={(props) => <Series {...props} />}
+        path={'/movies/'}
+        render={(props) =>
+          <Movies
+            {...props}
+            contentStore={rootStore.contentStore}
+          />
+        }
       />
       <Route
         exact
-        path={'/movies/'}
-        render={(props) => <Series {...props} />}
+        path={['/movie/:id']}
+        render={(props) =>
+          <Series
+            {...props}
+            contentStore={rootStore.contentStore}
+          />
+        }
+      />
+      <Route
+        exact
+        path={'/series/'}
+        render={(props) =>
+          <Series
+            {...props}
+            contentStore={rootStore.contentStore}
+          />
+        }
       />
       <Redirect to={'/'} />
     </Switch>
