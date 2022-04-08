@@ -12,7 +12,7 @@ const Container = styled.button`
   margin: .75rem;
   border: none;
   border-radius: .75rem;
-  background: url(${props => props.background}) no-repeat center;
+  background: url(${props => props.background}) no-repeat center var(--ceci-light-second-transparent);
   background-size: cover;
   cursor: pointer;
   outline: none;
