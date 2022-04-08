@@ -4,9 +4,6 @@ import { observer } from 'mobx-react-lite';
 import { I18n } from '@aws-amplify/core';
 import styled from 'styled-components';
 
-// Axios
-import { trendingClient } from '../dataflow/axios/axios';
-
 // Components
 import Card from '../components/Card';
 
@@ -79,49 +76,11 @@ const Home = observer(({
   const moviesList = contentStore.getMoviesPreview();
   const seriesList = contentStore.getSeriesPreview();
 
-  const getMovies = async () => {
-    try {
-      const response = await trendingClient({
-        method: 'get',
-        url: `&language=${language}`
-      });
-
-      const movies = response.data.results
-        .filter(movie => movie.media_type === 'movie')
-        .map(movie => ({
-          id: movie.id,
-          title: movie.title,
-          description: movie.overview,
-          score: movie.vote_average,
-          posterImage: `${process.env.REACT_APP_API_IMAGE_URL_BASE}${movie.poster_path}`,
-          adult: movie.adult,
-          popularity: movie.popularity,
-          backdropImage: `${process.env.REACT_APP_API_IMAGE_URL_BASE}${movie.backdrop_path}`
-        }));
-
-      const series = response.data.results
-        .filter(serie => serie.media_type === 'tv')
-        .map(serie => ({
-          id: serie.id,
-          title: serie.name,
-          description: serie.overview,
-          score: serie.vote_average,
-          posterImage: `${process.env.REACT_APP_API_IMAGE_URL_BASE}${serie.poster_path}`,
-          adult: false,
-          popularity: serie.popularity,
-          backdropImage: `${process.env.REACT_APP_API_IMAGE_URL_BASE}${serie.backdrop_path}`
-        }));
-
-      contentStore.saveMoviesPreview(movies);
-      contentStore.saveSeriesPreview(series);
-    } catch (error) { console.log('error: ', error) }
-  }
-
   useEffect(() => {
     if (!moviesList.length && !seriesList.length) {
-      getMovies();
+      contentStore.savePreview();
     }
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const renderMovies = () => (
     <Content>
@@ -130,7 +89,13 @@ const Home = observer(({
         {I18n.get('view-more')}
       </MoreButton>
       <ListBox>
-        {moviesList.map(movie => <Card key={movie.id} item={movie} />)}
+        {moviesList.map(movie => (
+          <Card
+            key={movie.id}
+            contentStore={contentStore}
+            item={movie}
+          />
+        ))}
       </ListBox>
     </Content>
   );
@@ -142,7 +107,13 @@ const Home = observer(({
         {I18n.get('view-more')}
       </MoreButton>
       <ListBox>
-        {seriesList.map(movie => <Card key={movie.id} item={movie} />)}
+        {seriesList.map(serie => (
+          <Card
+            key={serie.id}
+            contentStore={contentStore}
+            item={serie}
+          />
+        ))}
       </ListBox>
     </Content>
   );

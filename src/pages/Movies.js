@@ -4,9 +4,6 @@ import { I18n } from '@aws-amplify/core';
 import styled from 'styled-components';
 import { observer } from 'mobx-react-lite';
 
-// Axios
-import { moviesClient } from '../dataflow/axios/axios';
-
 // Components
 import Card from '../components/Card';
 
@@ -60,40 +57,22 @@ const Movies = observer(({
 
   const moviesList = contentStore.getMovies();
 
-  const getMovies = async () => {
-    try {
-      const response = await moviesClient({
-        method: 'get',
-        url: `&language=${language}`
-      });
-
-      const movies = response.data.results.map(movie => ({
-        id: movie.id,
-        title: movie.title,
-        description: movie.overview,
-        score: movie.vote_average,
-        posterImage: `${process.env.REACT_APP_API_IMAGE_URL_BASE}${movie.poster_path}`,
-        adult: movie.adult,
-        popularity: movie.popularity,
-        backdropImage: `${process.env.REACT_APP_API_IMAGE_URL_BASE}${movie.backdrop_path}`
-      }));
-
-      contentStore.saveMovies(movies);
-    } catch (error) { console.log('error: ', error) }
-  }
-
   useEffect(() => {
     if (!moviesList.length) {
-      getMovies();
+      contentStore.saveMovies();
     }
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const renderMovies = () => (
     <Content>
       <Title>{I18n.get('movies-title')}</Title>
       <ListBox>
         {moviesList.map(movie =>
-          <Card key={movie.id} item={movie} />
+          <Card
+            key={movie.id}
+            contentStore={contentStore}
+            item={movie}
+          />
         )}
       </ListBox>
     </Content>

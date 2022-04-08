@@ -4,9 +4,6 @@ import { I18n } from '@aws-amplify/core';
 import styled from 'styled-components';
 import { observer } from 'mobx-react-lite';
 
-// Axios
-import { seriesClient } from '../dataflow/axios/axios';
-
 // Components
 import Card from '../components/Card';
 
@@ -60,40 +57,22 @@ const Series = observer(({
 
   const seriesList = contentStore.getSeries();
 
-  const getSeries = async () => {
-    try {
-      const response = await seriesClient({
-        method: 'get',
-        url: `&language=${language}`
-      });
-
-      const series = response.data.results.map(serie => ({
-        id: serie.id,
-        title: serie.name,
-        description: serie.overview,
-        score: serie.vote_average,
-        posterImage: `${process.env.REACT_APP_API_IMAGE_URL_BASE}${serie.poster_path}`,
-        adult: false,
-        popularity: serie.popularity,
-        backdropImage: `${process.env.REACT_APP_API_IMAGE_URL_BASE}${serie.backdrop_path}`
-      }));
-
-      contentStore.saveSeries(series);
-    } catch (error) { console.log('error: ', error) }
-  }
-
   useEffect(() => {
     if (!seriesList.length) {
-      getSeries();
+      contentStore.saveSeries();
     }
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const renderSeries = () => (
     <Content>
       <Title>{I18n.get('series-title')}</Title>
       <ListBox>
         {seriesList.map(serie =>
-          <Card key={serie.id} item={serie} />
+          <Card
+            key={serie.id}
+            contentStore={contentStore}
+            item={serie}
+          />
         )}
       </ListBox>
     </Content>
