@@ -18,13 +18,19 @@ const Container = styled.div`
 
 const Content = styled.div`
   position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
 const Title = styled.h2`
   margin-bottom: 2rem;
+  padding-top: .75rem;
+  padding-bottom: .25rem;
   font: 800 2.5rem 'Josefin Sans', sans-serif;
   color: #fff;
-  text-align: center;
+  border-style: double none double none;
+  border-width: 7px;
 `;
 
 const ListBox = styled.div`
