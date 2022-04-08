@@ -24,6 +24,7 @@ const Content = styled.div`
 `;
 
 const Title = styled.h2`
+  margin: 0;
   margin-bottom: 2rem;
   padding-top: .75rem;
   padding-bottom: .25rem;

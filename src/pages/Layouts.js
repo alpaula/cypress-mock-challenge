@@ -1,6 +1,6 @@
 // Libs
-import React from 'react';
-import { Switch, Route } from 'react-router-dom';
+import React, { useEffect, useRef } from 'react';
+import { Switch, Route, useHistory } from 'react-router-dom';
 import Redirect from 'react-router-dom/Redirect';
 import styled from 'styled-components';
 
@@ -15,12 +15,37 @@ import Series from './Series';
 // Styles
 const Container = styled.div`
   width: 100%;
-  min-height: 100vh;
+  height: 100vh;
   padding-top: 3rem;
   background-color: var(--ceci-medium-second);
+  overflow-y: auto;
+  scroll-behavior: smooth;
+
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #c9729f;
+  }
+
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #fff;
+  }
 `;
 
 const Layouts = (props) => {
+  const history = useHistory();
+  const containerRef = useRef();
+
+  useEffect(() => {
+    console.log(containerRef);
+    containerRef.current.scrollTop = 0
+    // window.scrollTo(0)
+  }, [history.location.pathname]);
+
   const handleLogout = () => {
     window.localStorage.removeItem(
       `${process.env.REACT_APP_LOCALSTORAGE_CREDENTIALS}`
@@ -79,7 +104,7 @@ const Layouts = (props) => {
   );
 
   return (
-    <Container>
+    <Container ref={containerRef}>
       <Header
         handleLogout={handleLogout}
         history={props.history}
