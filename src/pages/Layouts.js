@@ -11,6 +11,7 @@ import Header from '../components/Header';
 import Home from './Home';
 import Movies from './Movies';
 import Series from './Series';
+import SelectedMovie from './SelectedMovie';
 
 // Styles
 const Container = styled.div`
@@ -41,9 +42,7 @@ const Layouts = (props) => {
   const containerRef = useRef();
 
   useEffect(() => {
-    console.log(containerRef);
-    containerRef.current.scrollTop = 0
-    // window.scrollTo(0)
+    containerRef.current.scrollTop = 0;
   }, [history.location.pathname]);
 
   const handleLogout = () => {
@@ -83,7 +82,7 @@ const Layouts = (props) => {
         exact
         path={['/movie/:id']}
         render={(props) =>
-          <Series
+          <SelectedMovie
             {...props}
             contentStore={rootStore.contentStore}
           />
