@@ -85,14 +85,12 @@ const dict = {
     'home-tab': 'Home',
     'movies-tab': 'Movies',
     'series-tab': 'Series',
-    'search-tab': 'Search',
   },
   'pt-BR': {
     'logout-button': 'Sair',
     'home-tab': 'Home',
     'movies-tab': 'Filmes',
     'series-tab': 'Séries',
-    'search-tab': 'Buscar',
   },
 };
 
@@ -100,7 +98,6 @@ const tabsList = [
   { id: 0, name: 'home-tab', pathname: '/' },
   { id: 1, name: 'movies-tab', pathname: '/movies' },
   { id: 2, name: 'series-tab', pathname: '/series' },
-  { id: 3, name: 'search-tab', pathname: '/search' },
 ];
 
 const Header = ({
