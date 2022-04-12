@@ -5,6 +5,8 @@ import {
   getMoviesApi,
   getSelectedMovie,
   getSelectedMovieCast,
+  getSelectedSerie,
+  getSelectedSerieCast,
   getSeriesApi,
   getTrendingApi
 } from '../api/api';
@@ -27,7 +29,22 @@ export const initialState = {
     releaseDate: '',
     runtime: 0,
     adult: false,
-  }
+  },
+  selectedSerie: {
+    id: 0,
+    title: '',
+    description: '',
+    originalLanguage: '',
+    originalTitle: '',
+    genres: '',
+    poster: '',
+    actors: '',
+    creators: '',
+    releaseDate: '',
+    adult: false,
+    seasons: 0,
+    inProduction: false
+  },
 };
 
 const Movie = types.model('Movie', {
@@ -53,12 +70,29 @@ const SelectedMovie = types.model('SelectedMovie', {
   adult: types.boolean,
 });
 
+const SelectedSerie = types.model('SelectedSerie', {
+  id: types.number,
+  title: types.string,
+  originalLanguage: types.string,
+  originalTitle: types.string,
+  description: types.string,
+  genres: types.string,
+  poster: types.string,
+  actors: types.string,
+  creators: types.string,
+  releaseDate: types.string,
+  seasons: types.number,
+  adult: types.boolean,
+  inProduction: types.boolean
+});
+
 export const contentModel = types.model('ContentStore', {
   moviesPreview: types.map(Movie),
   seriesPreview: types.map(Movie),
   movies: types.map(Movie),
   series: types.map(Movie),
-  selectedMovie: SelectedMovie
+  selectedMovie: SelectedMovie,
+  selectedSerie: SelectedSerie,
 }).views(self => ({
   getMoviesPreview: computedFn(function getMoviesPreview() {
     return Array.from(self.moviesPreview.values());
@@ -99,7 +133,7 @@ export const contentModel = types.model('ContentStore', {
             title: serie.name,
             description: serie.overview,
             posterImage: `${process.env.REACT_APP_API_IMAGE_URL_BASE}${serie.poster_path}`,
-            type: serie.media_type
+            type: 'serie'
           })
         });
     } catch (error) { console.log(error) }
@@ -156,14 +190,42 @@ export const contentModel = types.model('ContentStore', {
         releaseDate: data.release_date,
         runtime: data.runtime,
         adult: data.adult,
-        budget: data.budget
       }
 
       self.selectedMovie = movie;
     } catch (error) { console.log(error) }
   }),
+  saveSelectedSerie: flow(function* saveSelectedSerie(id) {
+    try {
+      const response = yield getSelectedSerie(id);
+      const responseCast = yield getSelectedSerieCast(id);
+
+      const { data } = response;
+
+      const serie = {
+        id: data.id,
+        title: data.name,
+        originalLanguage: data.original_language,
+        originalTitle: data.original_name,
+        description: data.overview,
+        genres: data.genres.map(item => item.name).join(', '),
+        poster: `${process.env.REACT_APP_API_IMAGE_URL_BASE}${data.poster_path}`,
+        actors: responseCast.data.cast.map(item => item.original_name).join(', '),
+        creators: data.created_by.map(item => item.name).join(', '),
+        releaseDate: data.first_air_date,
+        seasons: data.number_of_seasons,
+        adult: data.adult,
+        inProduction: data.in_production
+      }
+
+      self.selectedSerie = serie;
+    } catch (error) { console.log(error) }
+  }),
   cleanSelectedMovie() {
     self.selectedMovie = initialState.selectedMovie;
+  },
+  cleanSelectedSerie() {
+    self.selectedSerie = initialState.selectedSerie;
   },
   cleanModule() {
     self.moviesPreview = initialState.moviesPreview;

@@ -12,6 +12,7 @@ import Home from './Home';
 import Movies from './Movies';
 import Series from './Series';
 import SelectedMovie from './SelectedMovie';
+import SelectedSerie from './SelectedSerie';
 
 // Styles
 const Container = styled.div`
@@ -93,6 +94,16 @@ const Layouts = (props) => {
         path={'/series/'}
         render={(props) =>
           <Series
+            {...props}
+            contentStore={rootStore.contentStore}
+          />
+        }
+      />
+      <Route
+        exact
+        path={['/serie/:id']}
+        render={(props) =>
+          <SelectedSerie
             {...props}
             contentStore={rootStore.contentStore}
           />

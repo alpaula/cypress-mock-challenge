@@ -45,3 +45,9 @@ export const getSelectedSerie = (id) =>
     method: 'get',
     url: `tv/${id}?api_key=${process.env.REACT_APP_API_MOVIEDB_API_KEY}&language=${language}`
   });
+
+export const getSelectedSerieCast = (id) =>
+  apiClient({
+    method: 'get',
+    url: `tv/${id}/credits?api_key=${process.env.REACT_APP_API_MOVIEDB_API_KEY}&language=${language}`
+  });
