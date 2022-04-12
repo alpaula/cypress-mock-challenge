@@ -53,12 +53,11 @@ const Description = styled.p`
   }
 `;
 
-const Card = ({ item, contentStore }) => {
+const Card = ({ item }) => {
   const history = useHistory();
 
   const handleSelectedItem = () => {
-    contentStore.setSelectedMovie(item);
-    history.push(`/movie/${item.id}`);
+    history.push(`/${item.type}/${item.id}/`);
   }
 
   return (
