@@ -37,7 +37,7 @@ const Private = (props) => {
 
   useEffect(() => {
     getAuth();
-  }, [props.location.key]);
+  }, [props.location.key]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const renderRoute = () => {
     const { component: Component, ...rest } = props;
