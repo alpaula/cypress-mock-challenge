@@ -36,6 +36,12 @@ const Container = styled.div`
   ::-webkit-scrollbar-thumb {
     background: #fff;
   }
+
+  @media (max-width: 480px) {
+    ::-webkit-scrollbar {
+      width: 2px;
+    }
+  }
 `;
 
 const Layouts = (props) => {
