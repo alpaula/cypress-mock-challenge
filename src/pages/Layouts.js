@@ -54,7 +54,7 @@ const Layouts = (props) => {
       `${process.env.REACT_APP_LOCALSTORAGE_ORGANIZATION}`
     );
 
-    window.location = `${process.env.REACT_APP_REDIRECT_URI}/login`;
+    window.location = `/login`;
   };
 
   const renderLayout = () => (
