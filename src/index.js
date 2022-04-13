@@ -16,7 +16,7 @@ const container = document.getElementById('root');
 const root = createRoot(container);
 
 root.render(
-  <BrowserRouter basename={process.env.PUBLIC_URL}>
+  <BrowserRouter basename={process.env.REACT_APP_PUBLIC_URL}>
     <Switch>
       <Route exact path="/login" render={(props) => <Login {...props} />} />
       <Private render={(props) => <Layouts {...props} />} />
