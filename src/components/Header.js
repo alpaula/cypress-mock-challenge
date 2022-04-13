@@ -1,10 +1,11 @@
 // Libs
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { I18n } from '@aws-amplify/core';
 
 // Images
 import logo from '../assets/logo.png';
+import menuIcon from '../assets/menu.svg';
 
 // Styles
 const Container = styled.header`
@@ -20,6 +21,10 @@ const Container = styled.header`
   box-shadow: 0 0 15px #00000033;
   backdrop-filter: blur(2px);
   z-index: 1;
+
+  @media (max-width: 480px) {
+    padding: 0 1rem;
+  } 
 `;
 
 const BoxLogo = styled.button`
@@ -49,6 +54,12 @@ const LogoLabel = styled.label`
 const TabsList = styled.div`
   display: flex;
   align-items: center;
+
+  @media (max-width: 480px) {
+    flex-direction: column;
+    width: 15rem;
+    background-color: #fff;
+  }
 `;
 
 const TabItem = styled.button`
@@ -63,10 +74,16 @@ const TabItem = styled.button`
   ${({ isSelected }) => isSelected && `
     text-decoration: underline;
     font-weight: 600;
+    color: var(--ceci-medium);
   `}
 
   :hover {
     color: var(--ceci-medium);
+  }
+
+  @media (max-width: 480px) {
+    width: 100%;
+    height: 3.5rem;
   }
 `;
 
@@ -77,6 +94,34 @@ const LogoutButton = styled.button`
   cursor: pointer;
   font: 300 1rem 'Josefin Sans', sans-serif;
   color: var(--ceci-text);
+
+  @media (max-width: 480px) {
+    width: 100%;
+    height: 3.5rem;
+  }
+`;
+
+const Overlay = styled.div`
+  position: absolute;
+  top: 2.95rem;
+  left: 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  width: 100vw;
+  height: calc(100vh - 3rem);
+  background-color: #fdfaff42;
+  backdrop-filter: blur(0.6875rem);
+`;
+
+const MenuButton = styled.button`
+  border: none;
+  background-color: transparent;
+  outline: none;
+`;
+
+const MenuIcon = styled.img`
+  width: 2rem;
 `;
 
 const dict = {
@@ -104,8 +149,18 @@ const Header = ({
   handleLogout,
   history
 }) => {
+  const [isMenu, setMenu] = useState(false);
+
+  const isMobile = window.innerWidth <= 480;
+
   I18n.setLanguage(navigator.language === 'pt-BR' ? navigator.language : 'en');
   I18n.putVocabularies(dict);
+
+  const renderLogout = () => (
+    <LogoutButton onClick={handleLogout}>
+      {I18n.get('logout-button')}
+    </LogoutButton>
+  );
 
   const renderTabs = () => (
     <TabsList>
@@ -113,17 +168,37 @@ const Header = ({
         const { pathname } = history.location;
         const isSelected = pathname === tab.pathname || pathname === `${tab.pathname}/`;
 
+        const handleTab = () => {
+          history.push(tab.pathname);
+          setMenu(false);
+        };
+
         return (
           <TabItem
             key={tab.id}
-            onClick={() => history.push(tab.pathname)}
+            onClick={handleTab}
             isSelected={isSelected}
           >
             {I18n.get(tab.name)}
           </TabItem>
         );
       })}
+      {isMobile && renderLogout()}
     </TabsList>
+  );
+
+  const renderMenu = () => {
+    return (
+      <Overlay>
+        {renderTabs()}
+      </Overlay>
+    );
+  }
+
+  const renderMenuButton = () => (
+    <MenuButton onClick={() => setMenu(!isMenu)}>
+      <MenuIcon src={menuIcon} />
+    </MenuButton>
   );
 
   return (
@@ -132,10 +207,10 @@ const Header = ({
         <Logo src={logo} />
         <LogoLabel>tv</LogoLabel>
       </BoxLogo>
-      {renderTabs()}
-      <LogoutButton onClick={handleLogout}>
-        {I18n.get('logout-button')}
-      </LogoutButton>
+      {!isMobile && renderTabs()}
+      {!isMobile && renderLogout()}
+      {isMobile && renderMenuButton()}
+      {isMobile && isMenu && renderMenu()}
     </Container>
   );
 };
