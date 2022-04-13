@@ -22,11 +22,22 @@ const Container = styled.div`
   margin: 0 auto;
   padding: 0 5%;
   background-color: #000;
+
+  @media (max-width: 480px) {
+    flex-direction: column;
+    height: auto;
+    min-height: 100%;
+    padding: 3rem 1rem;
+  }
 `;
 
 const ImagesBox = styled.div`
   position: relative;
   width: 30%;
+
+  @media (max-width: 480px) {
+    width: 50%;
+  }
 `;
 
 const PosterImage = styled.img`
@@ -36,6 +47,11 @@ const PosterImage = styled.img`
 const Content = styled.div`
   width: 60%;
   margin-left: 3%;
+
+  @media (max-width: 480px) {
+    width: 100%;
+    margin: 0;
+  }
 `;
 
 const Title = styled.h3`
@@ -81,6 +97,10 @@ const Description = styled.p`
   font: 100 1rem 'Josefin Sans', sans-serif;
   line-height: 1.375rem;
   color: var(--ceci-light-second);
+
+  @media (max-width: 480px) {
+    width: 100%;
+  }
 `;
 
 const dict = {
