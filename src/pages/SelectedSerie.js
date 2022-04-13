@@ -7,7 +7,10 @@ import { observer } from "mobx-react-lite";
 import { I18n } from "@aws-amplify/core";
 
 // Images
-import freeIcon from '../assets/free.png'
+import freeIcon from '../assets/free.png';
+
+// Components
+import Loading from "../components/Loading";
 
 // Styles
 const Container = styled.div`
@@ -108,12 +111,18 @@ const SelectedSerie = observer(({
   const selectedId = history.location.pathname.split('/')[2];
 
   const serie = toJS(contentStore.selectedSerie);
+  const isLoading = contentStore.isLoading;
 
   useEffect(() => {
-    contentStore.saveSelectedSerie(selectedId);
+    contentStore.setLoading();
+    setTimeout(() => {
+      contentStore.saveSelectedSerie(selectedId);
+    }, 1500);
 
     return () => contentStore.cleanSelectedSerie();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  if (isLoading) return <Loading />;
 
   return (
     <Container>

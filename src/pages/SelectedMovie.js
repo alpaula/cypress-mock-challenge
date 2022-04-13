@@ -4,10 +4,13 @@ import styled from 'styled-components';
 import { useHistory } from "react-router-dom";
 import { toJS } from "mobx";
 import { observer } from "mobx-react-lite";
+import { I18n } from "@aws-amplify/core";
 
 // Images
 import freeIcon from '../assets/free.png'
-import { I18n } from "@aws-amplify/core";
+
+// Components
+import Loading from "../components/Loading";
 
 // Styles
 const Container = styled.div`
@@ -106,9 +109,13 @@ const SelectedMovie = observer(({
   const selectedId = history.location.pathname.split('/')[2];
 
   const movie = toJS(contentStore.selectedMovie);
+  const isLoading = contentStore.isLoading;
 
   useEffect(() => {
-    contentStore.saveSelectedMovie(selectedId);
+    contentStore.setLoading();
+    setTimeout(() => {
+      contentStore.saveSelectedMovie(selectedId);
+    }, 1500);
 
     return () => contentStore.cleanSelectedMovie();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
@@ -119,6 +126,8 @@ const SelectedMovie = observer(({
 
     return `${hours} h ${minutes} min`;
   }
+
+  if (isLoading) return <Loading />;
 
   return (
     <Container>

@@ -6,6 +6,7 @@ import { observer } from 'mobx-react-lite';
 
 // Components
 import Card from '../components/Card';
+import Loading from '../components/Loading';
 
 // Styles
 const Container = styled.div`
@@ -56,10 +57,14 @@ const Movies = observer(({
   I18n.putVocabularies(dict);
 
   const moviesList = contentStore.getMovies();
+  const isLoading = contentStore.isLoading;
 
   useEffect(() => {
     if (!moviesList.length) {
-      contentStore.saveMovies();
+      contentStore.setLoading();
+      setTimeout(() => {
+        contentStore.saveMovies();
+      }, 1500);
     }
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -77,6 +82,8 @@ const Movies = observer(({
       </ListBox>
     </Content>
   );
+
+  if (isLoading) return <Loading />;
 
   return (
     <Container>

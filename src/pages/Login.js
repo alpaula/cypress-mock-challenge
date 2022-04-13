@@ -8,6 +8,7 @@ import axios from 'axios';
 import logo from '../assets/logo.png';
 import passwordIcon from '../assets/password.png';
 import passwordHideIcon from '../assets/password-hide.png';
+import loadingIcon from '../assets/spinning.svg';
 
 // Styles
 const Container = styled.div`
@@ -104,6 +105,9 @@ const ErrorText = styled.span`
 `;
 
 const Button = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 100%;
   height: 2.75rem;
   margin-top: 1.5rem;
@@ -118,6 +122,10 @@ const Button = styled.button`
     opacity: .5;
     cursor: initial;
   }
+`;
+
+const Loading = styled.img`
+  height: 1.25rem;
 `;
 
 const dict = {
@@ -146,6 +154,7 @@ const Login = ({ history }) => {
   const [passwordValue, setPassword] = useState('');
   const [passwordType, setPasswordType] = useState('password');
   const [error, setError] = useState(null);
+  const [isLoading, setLoading] = useState(false);
 
   I18n.setLanguage(navigator.language === 'pt-BR' ? navigator.language : 'en');
   I18n.putVocabularies(dict);
@@ -159,6 +168,8 @@ const Login = ({ history }) => {
     try {
       const isEmail = validateEmail(emailValue);
       if (isEmail) {
+        setLoading(true);
+
         const response = await axios({
           method: 'post',
           url: '/login',
@@ -172,12 +183,16 @@ const Login = ({ history }) => {
           `${process.env.REACT_APP_LOCALSTORAGE_CREDENTIALS}`,
           JSON.stringify(response.data)
         );
+
         history.push('/home');
       } else {
         setError('invalid-email-format');
       }
+
+      setLoading(false);
     } catch (er) {
       setError('user-no-authorized');
+      setLoading(false);
     }
   }
 
@@ -231,9 +246,11 @@ const Login = ({ history }) => {
           <ErrorText>{I18n.get(error)}</ErrorText>}
         <Button
           onClick={handleLogin}
-          disabled={!emailValue || !passwordValue}
+          disabled={!emailValue || !passwordValue || isLoading}
         >
-          {I18n.get('login-title')}
+          {isLoading
+            ? <Loading src={loadingIcon} />
+            : I18n.get('login-title')}
         </Button>
       </Fragment>
     );

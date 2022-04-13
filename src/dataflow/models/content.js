@@ -16,6 +16,7 @@ export const initialState = {
   seriesPreview: {},
   movies: {},
   series: {},
+  isLoading: false,
   selectedMovie: {
     id: 0,
     title: '',
@@ -87,6 +88,7 @@ const SelectedSerie = types.model('SelectedSerie', {
 });
 
 export const contentModel = types.model('ContentStore', {
+  isLoading: types.boolean,
   moviesPreview: types.map(Movie),
   seriesPreview: types.map(Movie),
   movies: types.map(Movie),
@@ -107,6 +109,9 @@ export const contentModel = types.model('ContentStore', {
     return Array.from(self.series.values());
   }),
 })).actions(self => ({
+  setLoading() {
+    self.isLoading = true;
+  },
   savePreview: flow(function* savePreview() {
     try {
       const response = yield getTrendingApi();
@@ -136,38 +141,43 @@ export const contentModel = types.model('ContentStore', {
             type: 'serie'
           })
         });
+
+      self.isLoading = false;
+
     } catch (error) { console.log(error) }
   }),
   saveMovies: flow(function* saveMovies() {
     try {
       const response = yield getMoviesApi();
 
-      response.data.results
-        .forEach(movie => {
-          self.movies.set(movie.id, {
-            id: movie.id,
-            title: movie.title,
-            description: movie.overview,
-            posterImage: `${process.env.REACT_APP_API_IMAGE_URL_BASE}${movie.poster_path}`,
-            type: 'movie'
-          })
-        });
+      response.data.results.forEach(movie => {
+        self.movies.set(movie.id, {
+          id: movie.id,
+          title: movie.title,
+          description: movie.overview,
+          posterImage: `${process.env.REACT_APP_API_IMAGE_URL_BASE}${movie.poster_path}`,
+          type: 'movie'
+        })
+      });
+
+      self.isLoading = false;
     } catch (error) { console.log(error) }
   }),
   saveSeries: flow(function* saveSeries() {
     try {
       const response = yield getSeriesApi();
 
-      response.data.results
-        .forEach((serie) => {
-          self.series.set(serie.id, {
-            id: serie.id,
-            title: serie.name,
-            description: serie.overview,
-            posterImage: `${process.env.REACT_APP_API_IMAGE_URL_BASE}${serie.poster_path}`,
-            type: 'serie'
-          })
-        });
+      response.data.results.forEach((serie) => {
+        self.series.set(serie.id, {
+          id: serie.id,
+          title: serie.name,
+          description: serie.overview,
+          posterImage: `${process.env.REACT_APP_API_IMAGE_URL_BASE}${serie.poster_path}`,
+          type: 'serie'
+        })
+      });
+
+      self.isLoading = false;
     } catch (error) { console.log(error) }
   }),
   saveSelectedMovie: flow(function* saveSelectedMovie(id) {
@@ -193,6 +203,7 @@ export const contentModel = types.model('ContentStore', {
       }
 
       self.selectedMovie = movie;
+      self.isLoading = false;
     } catch (error) { console.log(error) }
   }),
   saveSelectedSerie: flow(function* saveSelectedSerie(id) {
@@ -219,6 +230,7 @@ export const contentModel = types.model('ContentStore', {
       }
 
       self.selectedSerie = serie;
+      self.isLoading = false;
     } catch (error) { console.log(error) }
   }),
   cleanSelectedMovie() {
@@ -233,5 +245,7 @@ export const contentModel = types.model('ContentStore', {
     self.movies = initialState.movies;
     self.series = initialState.series;
     self.selectedMovie = initialState.selectedMovie;
+    self.selectedSerie = initialState.selectedSerie;
+    self.isLoading = initialState.isLoading;
   }
 }));

@@ -6,6 +6,7 @@ import styled from 'styled-components';
 
 // Components
 import Card from '../components/Card';
+import Loading from '../components/Loading';
 
 // Styles
 const Container = styled.div`
@@ -75,10 +76,16 @@ const Home = observer(({
 
   const moviesList = contentStore.getMoviesPreview();
   const seriesList = contentStore.getSeriesPreview();
+  const isLoading = contentStore.isLoading;
+
+  console.log(isLoading);
 
   useEffect(() => {
     if (!moviesList.length && !seriesList.length) {
-      contentStore.savePreview();
+      contentStore.setLoading();
+      setTimeout(() => {
+        contentStore.savePreview();
+      }, 1500);
     }
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -117,6 +124,8 @@ const Home = observer(({
       </ListBox>
     </Content>
   );
+
+  if (isLoading) return <Loading />;
 
   return (
     <Container>
