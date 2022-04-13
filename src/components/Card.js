@@ -26,6 +26,12 @@ const Container = styled.button`
       display: block;
     }
   }
+
+  @media (max-width: 480px) {
+    min-width: calc(50vw - 2.75rem);
+    width: calc(50vw - 2.75rem);
+    height: 60vw;
+  }
 `;
 
 const BoxTexts = styled.div`
@@ -36,10 +42,18 @@ const BoxTexts = styled.div`
   padding: .5rem 1rem;
   background-color: #ffffffcc;
   backdrop-filter: blur(2px);
+
+  @media (max-width: 480px) {
+    padding: .5rem;
+  }
 `;
 
 const Title = styled.h3`
   font: 600 1.25rem 'Josefin Sans', sans-serif;
+
+  @media (max-width: 480px) {
+    font-size: 1rem;
+  }
 `;
 
 const Description = styled.p`
@@ -50,6 +64,11 @@ const Description = styled.p`
 
   ::-webkit-scrollbar {
     display: none;
+  }
+
+  @media (max-width: 480px) {
+    max-height: 5rem;
+    font-size: .75rem;
   }
 `;
 
