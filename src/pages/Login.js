@@ -45,6 +45,10 @@ const Content = styled.div`
   border-radius: 15px;
   background-color: #fff;
   box-shadow: 0 0 15px #00000033;
+
+  @media (max-width: 480px) {
+    width: 85%;
+  }
 `;
 
 const Title = styled.h1`
@@ -99,7 +103,7 @@ const PasswordIcon = styled.img`
 
 const ErrorText = styled.span`
   position: absolute;
-  bottom: 4.25rem;
+  bottom: 4.125rem;
   font: 300 .875rem 'Josefin Sans', sans-serif;
   color: var(--ceci-error);
 `;
@@ -110,7 +114,7 @@ const Button = styled.button`
   justify-content: center;
   width: 100%;
   height: 2.75rem;
-  margin-top: 1.5rem;
+  margin-top: 1.75rem;
   border: none;
   border-radius: .25rem;
   background-color: var(--ceci-medium-second);
