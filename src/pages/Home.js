@@ -23,6 +23,10 @@ const Title = styled.h2`
   margin-left: 3rem;
   font: 800 2rem 'Josefin Sans', sans-serif;
   color: #fff;
+
+  @media (max-width: 480px) {
+    margin-left: 1rem;
+  }
 `;
 
 const MoreButton = styled.button`
@@ -49,6 +53,10 @@ const ListBox = styled.div`
 
   ::-webkit-scrollbar {
     display: none;
+  }
+
+  @media (max-width: 480px) {
+    padding: 1rem .5rem;
   }
 `;
 
