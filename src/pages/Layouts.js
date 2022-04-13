@@ -54,7 +54,7 @@ const Layouts = (props) => {
       `${process.env.REACT_APP_LOCALSTORAGE_ORGANIZATION}`
     );
 
-    window.location = `/login`;
+    history.replace(`/login`);
   };
 
   const renderLayout = () => (
