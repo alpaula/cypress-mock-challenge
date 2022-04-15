@@ -86,8 +86,6 @@ const Home = observer(({
   const seriesList = contentStore.getSeriesPreview();
   const isLoading = contentStore.isLoading;
 
-  console.log(isLoading);
-
   useEffect(() => {
     if (!moviesList.length && !seriesList.length) {
       contentStore.setLoading();

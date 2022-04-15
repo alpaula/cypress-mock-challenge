@@ -230,6 +230,7 @@ const Login = ({ history }) => {
             placeholder={I18n.get('login-email-placeholder')}
             onChange={handleChangeEmail}
             isError={error}
+            data-testid='email-input'
           />
         </InputLabel>
         <InputLabel>
@@ -237,19 +238,25 @@ const Login = ({ history }) => {
           <Input
             value={passwordValue}
             type={passwordType}
-            placeholder={I18n.get('login-email-placeholder')}
+            placeholder={I18n.get('login-password-placeholder')}
             onChange={handleChangePassword}
             onKeyUp={handleKeyUp}
             isError={error}
+            data-testid='password-input'
           />
           <PasswordButton onClick={handleChangePasswordType}>
             <PasswordIcon src={passwordType === 'text' ? passwordIcon : passwordHideIcon} />
           </PasswordButton>
         </InputLabel>
         {error &&
-          <ErrorText>{I18n.get(error)}</ErrorText>}
+          <ErrorText
+            data-testid='error-message'
+          >
+            {I18n.get(error)}
+          </ErrorText>}
         <Button
           onClick={handleLogin}
+          data-testid='login-button'
           disabled={!emailValue || !passwordValue || isLoading}
         >
           {isLoading
