@@ -16,7 +16,11 @@
  * @type {Cypress.PluginConfig}
  */
 // eslint-disable-next-line no-unused-vars
+require('dotenv').config();
+
 module.exports = (on, config) => {
-  // `on` is used to hook into various events Cypress emits
-  // `config` is the resolved Cypress config
-}
+	config.env.baseApi = process.env.REACT_APP_API_MOVIEDB_URL_BASE;
+  config.env.apiKey = process.env.REACT_APP_API_MOVIEDB_API_KEY;
+
+	return config;
+};

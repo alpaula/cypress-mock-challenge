@@ -72,7 +72,10 @@ const Description = styled.p`
   }
 `;
 
-const Card = ({ item }) => {
+const Card = ({
+  item,
+  testId
+}) => {
   const history = useHistory();
 
   const handleSelectedItem = () => {
@@ -83,6 +86,7 @@ const Card = ({ item }) => {
     <Container
       background={item.posterImage}
       onClick={handleSelectedItem}
+      data-testid={testId}
     >
       <BoxTexts>
         <Title>{item.title}</Title>

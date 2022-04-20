@@ -98,13 +98,17 @@ const Home = observer(({
   const renderMovies = () => (
     <Content>
       <Title>{I18n.get('movies-title')}</Title>
-      <MoreButton onClick={() => history.push('/movies/')}>
+      <MoreButton
+        data-testid='all-movies-button'
+        onClick={() => history.push('/movies/')}
+      >
         {I18n.get('view-more')}
       </MoreButton>
       <ListBox>
         {moviesList.map(movie => (
           <Card
             key={movie.id}
+            testId='movie-item'
             contentStore={contentStore}
             item={movie}
           />
@@ -116,13 +120,17 @@ const Home = observer(({
   const renderSeries = () => (
     <Content>
       <Title>{I18n.get('series-title')}</Title>
-      <MoreButton onClick={() => history.push('/series/')}>
+      <MoreButton
+        data-testid='all-series-button'
+        onClick={() => history.push('/series/')}
+      >
         {I18n.get('view-more')}
       </MoreButton>
       <ListBox>
         {seriesList.map(serie => (
           <Card
             key={serie.id}
+            testId='serie-item'
             contentStore={contentStore}
             item={serie}
           />
