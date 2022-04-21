@@ -140,9 +140,9 @@ const dict = {
 };
 
 const tabsList = [
-  { id: 0, name: 'home-tab', pathname: '/' },
-  { id: 1, name: 'movies-tab', pathname: '/movies' },
-  { id: 2, name: 'series-tab', pathname: '/series' },
+  { id: 0, testId: 'header-home-button', name: 'home-tab', pathname: '/' },
+  { id: 1, testId: 'header-movies-button', name: 'movies-tab', pathname: '/movies/' },
+  { id: 2, testId: 'header-series-button', name: 'series-tab', pathname: '/series/' },
 ];
 
 const Header = ({
@@ -157,7 +157,10 @@ const Header = ({
   I18n.putVocabularies(dict);
 
   const renderLogout = () => (
-    <LogoutButton onClick={handleLogout}>
+    <LogoutButton
+      onClick={handleLogout}
+      data-testid='logout-button'
+    >
       {I18n.get('logout-button')}
     </LogoutButton>
   );
@@ -176,6 +179,7 @@ const Header = ({
         return (
           <TabItem
             key={tab.id}
+            data-testid={tab.testId}
             onClick={handleTab}
             isSelected={isSelected}
           >

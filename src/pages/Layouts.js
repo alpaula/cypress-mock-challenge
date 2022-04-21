@@ -56,11 +56,8 @@ const Layouts = (props) => {
     window.localStorage.removeItem(
       `${process.env.REACT_APP_LOCALSTORAGE_CREDENTIALS}`
     );
-    window.localStorage.removeItem(
-      `${process.env.REACT_APP_LOCALSTORAGE_ORGANIZATION}`
-    );
 
-    history.replace(`/login`);
+    history.replace(`/login/`);
   };
 
   const renderLayout = () => (

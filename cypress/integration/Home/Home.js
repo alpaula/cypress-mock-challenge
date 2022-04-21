@@ -43,6 +43,22 @@ describe('Home Flow', () => {
     });
   });
 
+  it('should redirect to movies page from header', () => {
+    cy.findByTestId('header-movies-button').click({ force: true });
+
+    cy.location().should((loc) => {
+      expect(loc.pathname).equal('/movies/');
+    });
+  });
+
+  it('should redirect to series page from header', () => {
+    cy.findByTestId('header-series-button').click({ force: true });
+
+    cy.location().should((loc) => {
+      expect(loc.pathname).equal('/series/');
+    });
+  });
+
   it('should redirect to movies page', () => {
     cy.findByTestId('all-movies-button').click({ force: true });
 
@@ -52,12 +68,25 @@ describe('Home Flow', () => {
   });
 
   it('should redirect to selected movie page', () => {
-    cy.findAllByTestId('movie-item').should(($lis) => {
-      $lis[2].click();
-    });
+    cy.window().then((window) => {
+      const { worker, rest } = window.msw;
 
-    cy.location().should((loc) => {
-      expect(loc.pathname).equal('/movie/338953/');
+      worker.use(
+        rest.get(`${Cypress.env('baseApi')}trending/all/day?api_key=${Cypress.env('apiKey')}&language=pt-BR`, (req, res, ctx) => {
+          return res(
+            ctx.status(200),
+            ctx.json(homeJson)
+          )
+        }),
+      );
+
+      cy.findAllByTestId('movie-item').should(($lis) => {
+        $lis[2].click();
+      });
+
+      cy.location().should((loc) => {
+        expect(loc.pathname).equal('/movie/338953/');
+      });
     });
   });
 
@@ -70,12 +99,34 @@ describe('Home Flow', () => {
   });
 
   it('should redirect to selected serie page', () => {
-    cy.findAllByTestId('serie-item').should(($lis) => {
-      $lis[4].click();
+    cy.window().then((window) => {
+      const { worker, rest } = window.msw;
+
+      worker.use(
+        rest.get(`${Cypress.env('baseApi')}trending/all/day?api_key=${Cypress.env('apiKey')}&language=pt-BR`, (req, res, ctx) => {
+          return res(
+            ctx.status(200),
+            ctx.json(homeJson)
+          )
+        }),
+      );
+
+      cy.findAllByTestId('serie-item').should(($lis) => {
+        $lis[4].click();
+      });
+  
+      cy.location().should((loc) => {
+        expect(loc.pathname).equal('/serie/57243/');
+      });
     });
+  });
+
+  it('should make logout', () => {
+    cy.findByTestId('logout-button').click({ force: true });
 
     cy.location().should((loc) => {
-      expect(loc.pathname).equal('/serie/57243/');
+      expect(loc.pathname).equal('/login/');
+      expect(localStorage.getItem('animes.credentials')).to.eq(null);
     });
   });
 })
