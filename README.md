@@ -1,4 +1,25 @@
-# Getting Started with Create React App
+# Mobx, Cypress and Mock Service Worker Project
+
+Knowledge application project.
+
+## Were used for this project:
+
+- Mobx
+- Mock Service Worker
+- Cypress
+- Axios
+- Styled Components
+
+## Access link
+
+**https://splendid-starburst-efbaab.netlify.app/**
+
+## Login data
+
+user: **cecilia@gmail.com**
+password: **123456**
+
+## Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
